@@ -25,6 +25,7 @@ public class Jatek {
     private static String gyoztes = "";
     
     public void play() {
+    	// játék start...
 
         System.out.println("Köszöntünk játékunkban!");
         printSzabalyok();
