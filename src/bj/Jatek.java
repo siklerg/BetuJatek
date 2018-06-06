@@ -15,8 +15,8 @@ public class Jatek {
     private static ArrayList<String> jatekSzotar = new ArrayList<>();
     private static ArrayList<String> megoldasSzotar = new ArrayList<>();
 
-    //private String path = "C:\\Users\\Sikler.Gabor\\Google Drive\\HelixLab\\Java\\Játszótér\\BetuJatek\\src\\bj\\";
-    private String path = "E:\\Google Drive\\Code\\Játszótér\\BetuJatek\\src\\bj\\";
+    //private String path = "C:\\Users\\Sikler.Gabor\\Google Drive\\Code\\Git\\BetuJatek\\src\\bj\\";
+    private String path = "E:\\Google Drive\\Code\\Git\\BetuJatek\\src\\bj\\";
     
     private static String valasztottSzotarak = "";
     private static String szoJatekos = "---";
