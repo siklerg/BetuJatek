@@ -1,4 +1,4 @@
-package bj;
+package betuJatek;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -8,7 +8,7 @@ public class Jatek {
 
 	private Scanner scan = new Scanner(System.in);
 	private Random random = new Random();
-	private Szotar szotar = new Szotar();
+	//private Szotar szotar = new Szotar();
 
 	private ArrayList<String> alapSzotar = new ArrayList<>();
 	private ArrayList<String> jatekSzotar = new ArrayList<>();
@@ -35,13 +35,13 @@ public class Jatek {
 		System.out.println();
 
 		// alap szótár betöltése
-		alapSzotar = szotar.getAlapSzotar();
+		alapSzotar = Szotar.getAlapSzotar();
 
 		// kiegészítő szótárak beolvasása
-		valasztottKiegeszitoSzotarak("ragozott", szotar.getRagozottSzotar());
-		valasztottKiegeszitoSzotarak("ragok", szotar.getRagokSzotar());
-		valasztottKiegeszitoSzotarak("nevek", szotar.getNevekSzotar());
-		valasztottKiegeszitoSzotarak("roviditesek", szotar.getRoviditesekSzotar());
+		valasztottKiegeszitoSzotarak("ragozott", Szotar.getRagozottSzotar());
+		valasztottKiegeszitoSzotarak("ragok", Szotar.getRagokSzotar());
+		valasztottKiegeszitoSzotarak("nevek", Szotar.getNevekSzotar());
+		valasztottKiegeszitoSzotarak("roviditesek", Szotar.getRoviditesekSzotar());
 		System.out.println();
 
 		if (valasztottSzotarak.equals("")) {

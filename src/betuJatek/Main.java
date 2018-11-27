@@ -1,4 +1,4 @@
-package bj;
+package betuJatek;
 
 public class Main {
 
