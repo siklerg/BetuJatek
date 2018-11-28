@@ -8,17 +8,16 @@ public class Jatek {
 
 	private Scanner scan = new Scanner(System.in);
 	private Random random = new Random();
-	//private Szotar szotar = new Szotar();
 
-	private ArrayList<String> alapSzotar = new ArrayList<>();
-	private ArrayList<String> jatekSzotar = new ArrayList<>();
-	private ArrayList<String> megoldasSzotar = new ArrayList<>();
+	private ArrayList<String> alapSzotar = new ArrayList<>(); //játszható szavak szótára
+	private ArrayList<String> jatekSzotar = new ArrayList<>(); //megjátszott szavak szótára
+	private ArrayList<String> megoldasSzotar = new ArrayList<>(); //lehetséges szavak szótára
 
 	private String valasztottSzotarak = "";
 	private String szoJatekos = "---";
 	private String szoGep = "";
 	private boolean gameOver = false;
-	private String gyoztes = "";
+	private String winner = "";
 
 	public void play() {
 
@@ -61,56 +60,60 @@ public class Jatek {
 		alapSzotar.remove(szoGep);
 		jatekSzotar.add(szoGep);
 
+		//fut amíg nem a 'k' a válasz (Kilépés) vagy nincs még győztes
 		while (!szoJatekos.equals("k") && !gameOver) {
 
 			System.out.print("Kérem a következő szót: ");
 			szoJatekos = scan.next();
-
-			if (szoJatekos.equals("sz")) {
+			// elemezzük a játékos válaszát
+			if (szoJatekos.equals("sz")) { // szabály kérés
 				printSzabalyok();
 				continue;
-			} else if (szoJatekos.equals("v")) {
+			} else if (szoJatekos.equals("v")) { // felhasznált szavak kiirítása
 				System.out.println("Eddig felhasznált szavak (sorrendben):");
 				printSzotar(jatekSzotar);
 				System.out.println();
 				continue;
-			} else if (szoJatekos.equals("l")) {
+			} else if (szoJatekos.equals("l")) { // lehetséges szavak száma
 				System.out.println("Lehetséges megoldások száma: " + megoldasokSzama(szoGep));
 				continue;
-			} else if (szoJatekos.equals("s")) {
+			} else if (szoJatekos.equals("s")) { // segítség kérés
 				helpJatekos();
 				System.out.println();
 				System.out.println("S E G Í T S É G: " + szoJatekos);
-				if (megoldasokSzama(szoJatekos) == 0) {
+				if (megoldasokSzama(szoJatekos) == 0) { // nincs több lehetséges válasz
 					gameOver = true;
-					gyoztes = "Gép. (Az utolsó segítség után nem volt folytatási lehetőség)";
+					winner = "Gép. (Az utolsó segítség után nem volt folytatási lehetőség)";
 					continue;
-				} else {
+				} else { // volt lehetséges szó, a gép lép
 					gepLepes();
-					if (megoldasokSzama(szoGep) == 0) {
+					if (megoldasokSzama(szoGep) == 0) { // ha nincs több lehetséges válasz
 						gameOver = true;
-						gyoztes = "Gép. Nincs megfelelő szó a szótárban.";
+						winner = "Gép. Nincs megfelelő szó a szótárban.";
 					}
 					continue;
 				}
+				// ellenőrizzük a kapott szót, ha van hiba üzenet, akkor kiírjuk
 			} else if (!szoCheck().equals("")) {
 				System.out.println(szoCheck());
 				continue;
 			}
+			// ha idáig elérünk, akkor a kapott szó megfelelő
 			alapSzotar.remove(szoJatekos);
 			jatekSzotar.add(szoJatekos);
-
+			//ha nincs több megfelelő szó, azaz a megoldás szótár üresként generálódik le, akkor győzött a játékos
 			if (megoldasokSzama(szoJatekos) == 0) {
 				gameOver = true;
-				gyoztes = "Játékos";
+				winner = "Játékos";
 				continue;
 			}
 
 			gepLepes();
 
+			//ha nincs több megfelelő szó, azaz a megoldás szótár üresként generálódik le, akkor győzött a gép
 			if (megoldasokSzama(szoGep) == 0) {
 				gameOver = true;
-				gyoztes = "Gép. Nincs megfelelő szó a szótárban.";
+				winner = "Gép. Nincs több megfelelő szó a szótárban.";
 			}
 		}
 
@@ -119,7 +122,7 @@ public class Jatek {
 		System.out.println("A játék végetért!");
 		System.out.println();
 		if (gameOver) {
-			System.out.println("Győztes: " + gyoztes);
+			System.out.println("Győztes: " + winner);
 			System.out.println();
 		}
 		System.out.println("Összesen " + jatekSzotar.size() + " szó került a játékba.");
@@ -128,6 +131,7 @@ public class Jatek {
 		printSzotar(jatekSzotar);
 	}
 
+	/** Szabályok kiiratása. */
 	private void printSzabalyok() {
 		System.out.println();
 		System.out.println("T U D N I V A L Ó K");
@@ -147,6 +151,7 @@ public class Jatek {
 		System.out.println();
 	}
 
+	/** Kiegészító szótárak bekérése. */
 	private void valasztottKiegeszitoSzotarak(String szotar, ArrayList<String> list) {
 		String szotarValasztas;
 		System.out.print("Szeretnéd a \"" + szotar + "\" szavakat is betölteni? i/n ");
@@ -157,7 +162,7 @@ public class Jatek {
 		}
 	}
 
-
+	/** Szótár kiiratás. */
 	private void printSzotar(ArrayList<String> szotar) {
 		for (int i = 0; i < szotar.size(); i++) {
 			System.out.print(szotar.get(i) + ", ");
@@ -168,11 +173,16 @@ public class Jatek {
 		System.out.println();
 	}
 
+	/** Kezdő szó generálása. */
 	private void gepSzoGeneralas() {
 		int x = random.nextInt(alapSzotar.size());
 		szoGep = alapSzotar.get(x);
 	}
 
+	/**
+	 * Segítség a játékosnak. Legenerálódik a lehetséges szavak szótára, és
+	 * véletlenszerűen választunk belőle.
+	 */
 	private void helpJatekos() {
 		megoldasokSzotarGeneralas(szoGep);
 		int x = random.nextInt(megoldasSzotar.size());
@@ -181,6 +191,7 @@ public class Jatek {
 		jatekSzotar.add(szoJatekos);
 	}
 
+	/** Meghatározza a lehetséges megoldások számát, ehhez legenerálja a megoldás szótárt. */
 	private int megoldasokSzama(String szo) {
 		megoldasokSzotarGeneralas(szo);
 		int szamlalo = megoldasSzotar.size();
@@ -190,6 +201,7 @@ public class Jatek {
 		return szamlalo;
 	}
 
+	/** Legenerálja a megoldás szótárt a megadott szó alapján */
 	private void megoldasokSzotarGeneralas(String szo) {
 		megoldasSzotar.clear();
 		String szoHelp;
@@ -201,6 +213,10 @@ public class Jatek {
 		}
 	}
 
+	/**
+	 * Legenerálódik a megoldás szótár, és a gép véletlenszerűen kiválaszt egy szót,
+	 * majd megjeleníti.
+	 */
 	private void gepLepes() {
 		megoldasokSzotarGeneralas(szoJatekos);
 		int x = random.nextInt(megoldasSzotar.size());
@@ -211,6 +227,10 @@ public class Jatek {
 		System.out.println();
 	}
 
+	/**
+	 * A megadott szó ellenőrzése a szabályoknak megfelelően, ha van hiba,
+	 * visszadaja üzenetben.
+	 */
 	private String szoCheck() {
 		String uzenet = "";
 		if (szoJatekos.equals("k")) {
@@ -227,6 +247,7 @@ public class Jatek {
 		return uzenet;
 	}
 
+	/** Ellenőrzi, hogy a megadott két szó csak egy betűben tér-e el egymástól. */
 	private int szoValidChange(String szo1, String szo2) {
 		int egyezes = 0;
 		if (szo1.charAt(0) == szo2.charAt(0)) {
