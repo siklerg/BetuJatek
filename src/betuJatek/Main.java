@@ -3,8 +3,8 @@ package betuJatek;
 public class Main {
 
     public static void main(String[] args) {
-	Jatek jatek = new Jatek();
+	Game game = new Game();
 	System.out.println(" Start! ");
-	jatek.play();
+	game.play();
     }
 }
